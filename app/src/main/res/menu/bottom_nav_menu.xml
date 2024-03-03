@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/home_01"
+        android:enabled="true"
+        android:title="@string/title_home" />
+
+    <item
+        android:id="@+id/navigation_search"
+        android:enabled="true"
+        android:icon="@drawable/icon_search"
+        android:title="@string/title_search" />
+
+    <item
+        android:id="@+id/navigation_new_contest"
+        android:enabled="true"
+        android:icon="@drawable/home_01"
+        android:title="" />
+
+    <item
+        android:id="@+id/navigation_notifications"
+        android:icon="@drawable/icon_notification"
+        android:enabled="true"
+        android:title="@string/title_notifications" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/icon_profile"
+        android:enabled="true"
+        android:title="@string/title_profile" />
+
+
+</menu>
