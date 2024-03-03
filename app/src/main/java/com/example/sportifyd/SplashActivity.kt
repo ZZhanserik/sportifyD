@@ -1,4 +1,4 @@
-package com.example.sportify.com.example.sportifyd
+package com.example.sportifyd
 
 import android.content.Intent
 import android.os.Bundle

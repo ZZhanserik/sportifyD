@@ -1,4 +1,4 @@
-package com.example.sportify.com.example.sportifyd
+package com.example.sportifyd
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
