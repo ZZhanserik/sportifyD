@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/home_01"
         android:enabled="true"
+        android:icon="@drawable/home_01"
         android:title="@string/title_home" />
 
     <item
@@ -16,19 +17,19 @@
     <item
         android:id="@+id/navigation_new_contest"
         android:enabled="true"
-        android:icon="@drawable/home_01"
-        android:title="" />
+        android:icon="@drawable/icon_add1"
+        android:title="New Event" />
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/icon_notification"
         android:enabled="true"
+        android:icon="@drawable/icon_notification"
         android:title="@string/title_notifications" />
 
     <item
         android:id="@+id/navigation_profile"
-        android:icon="@drawable/icon_profile"
         android:enabled="true"
+        android:icon="@drawable/icon_profile"
         android:title="@string/title_profile" />
 
 
