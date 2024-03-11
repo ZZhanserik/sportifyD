@@ -15,13 +15,14 @@
         android:id="@+id/navigation_search"
         android:name="com.example.sportify.ui.search.SearchFragment"
         android:label="@string/title_search"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_search" >
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_new_contest"
         android:name="com.example.sportify.ui.newcontest.NewContestFragment"
         android:label="@string/title_new_contest"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_new_contest" />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -33,6 +34,16 @@
         android:id="@+id/navigation_profile"
         android:name="com.example.sportify.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_to_accountInformationFragment"
+            app:destination="@id/accountInformationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/accountInformationFragment"
+        android:name="com.example.sportify.ui.profile.AccountInformationFragment"
+        android:label="Edit Account Info"
+        tools:layout="@layout/fragment_account_edit" />
 
 </navigation>
