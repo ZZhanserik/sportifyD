@@ -1,4 +1,4 @@
-package com.example.sportify.ui.notifications
+package com.example.sportifyd.presentation.notifications
 
 import android.os.Bundle
 import android.view.LayoutInflater
