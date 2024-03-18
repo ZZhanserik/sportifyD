@@ -32,4 +32,9 @@
     <string name="notification">Notification</string>
     <string name="email">Email</string>
     <string name="create">Create</string>
+    <string name="join">JOIN</string>
+    <string name="filter">FILTER</string>
+    <string name="current_events">Current Events</string>
+    <string name="search_event">Search Event</string>
+    <string name="organizer">Organizer</string>
 </resources>
