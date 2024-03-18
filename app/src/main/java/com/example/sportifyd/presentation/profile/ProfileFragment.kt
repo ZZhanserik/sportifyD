@@ -1,4 +1,5 @@
-package com.example.sportify.ui.profile
+package com.example.sportifyd.presentation.profile
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sportifyd.R
 import com.example.sportifyd.databinding.FragmentProfileBinding
-import com.example.sportify.ui.home.HomeFragment
+import com.example.sportifyd.presentation.home.HomeFragment
+import com.example.sportifyd.presentation.profile.ProfileViewModel
 
 class ProfileFragment : Fragment() {
 

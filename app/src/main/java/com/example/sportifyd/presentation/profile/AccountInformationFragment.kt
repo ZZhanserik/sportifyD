@@ -1,4 +1,4 @@
-package com.example.sportify.ui.profile
+package com.example.sportifyd.presentation.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import com.example.sportify.ui.profile.ProfileViewModel
+import com.example.sportifyd.databinding.FragmentProfileBinding
 import com.example.sportifyd.databinding.FragmentAccountEditBinding
 
 class AccountInformationFragment: Fragment() {
@@ -30,4 +33,6 @@ class AccountInformationFragment: Fragment() {
 
         return root
     }
+
+
 }
