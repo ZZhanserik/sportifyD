@@ -15,20 +15,23 @@ object Service {
     private val usersRef = FirebaseDatabase.getInstance().getReference("users")
     private val eventsRef = FirebaseDatabase.getInstance().getReference("events")
 
-    fun getCurrentUser() = auth.currentUser
+    private fun getCurrentUser() = auth.currentUser
 
-    fun createUser(email: String, password:String): Task<AuthResult> {
+    fun createUser(email: String, password: String): Task<AuthResult> {
         return auth.createUserWithEmailAndPassword(email, password)
     }
 
-    fun addNewUserToDB(userId: String, user: User){
-        usersRef.child(userId).setValue(user)
+    fun createNewUserToDB(user: User) {
+        usersRef.child(getCurrentUser()?.uid ?: "").setValue(user)
     }
 
-    fun addNewEventToDB(event: SportEvent){
-        val key = eventsRef.push().key?:""
-        eventsRef.child(key).setValue(event)
+    fun createNewEventToDB(event: SportEvent): Task<Void> {
+        val key = eventsRef.push().key ?:""
+        return eventsRef.child(key).setValue(event)
     }
-
+    fun subscribeToEvent(eventId: String) {
+        usersRef.child(getCurrentUser()?.uid ?: "").child("events").child(eventId).setValue(true)
+        eventsRef.child("participants").child(getCurrentUser()?.uid.orEmpty()).setValue(true);
+    }
 
 }

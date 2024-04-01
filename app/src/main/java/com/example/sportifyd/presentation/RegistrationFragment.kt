@@ -43,8 +43,6 @@ class RegistrationFragment : Fragment() {
                 Service.createUser(email, password)
                     .addOnSuccessListener {
 
-                        val userId = Service.getCurrentUser()?.uid
-
                         val userData = User(
                             fullName = fullNameTv.text.toString(),
                             userName = userNameTv.text.toString(),
@@ -52,7 +50,7 @@ class RegistrationFragment : Fragment() {
                             email = email,
                             password = password
                         )
-                        Service.addNewUserToDB(userId ?: "", userData)
+                        Service.createNewUserToDB(userData)
 
                         Toast.makeText(
                             requireContext(),
@@ -76,6 +74,15 @@ class RegistrationFragment : Fragment() {
                         ).show()
                     }
             }
+        }
+
+        binding.loginPageButton.setOnClickListener {
+            val fragment = LoginFragment()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit()
         }
     }
 

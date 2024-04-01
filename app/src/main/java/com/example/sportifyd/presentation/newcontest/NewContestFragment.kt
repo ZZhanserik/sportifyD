@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.FragmentNewContestBinding
@@ -33,71 +34,64 @@ class NewContestFragment:Fragment() {
         _binding = FragmentNewContestBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
         val suggestions = arrayOf("Apple", "Banana", "Orange", "Pineapple", "Grapes")
         val adapter = ArrayAdapter(requireContext(), R.layout.simple_dropdown_item_1line, suggestions)
 
-        binding.eventLevel.setAdapter(adapter)
+        binding.run {
+            eventLevel.setAdapter(adapter)
 
-        val dateTextView = binding.eventDate
+            eventDate.setOnClickListener {
+                val builder = MaterialDatePicker.Builder.datePicker()
+                val datePicker = builder.build()
+                datePicker.addOnPositiveButtonClickListener {
+                    val selectedDateInMillis = datePicker.selection ?: 0
+                    val dateFormat = SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault())
+                    val selectedDate = dateFormat.format(Date(selectedDateInMillis))
+                    eventDate.text = selectedDate
+                }
 
-        dateTextView.setOnClickListener {
-            val builder = MaterialDatePicker.Builder.datePicker()
-            val datePicker = builder.build()
-
-            datePicker.addOnPositiveButtonClickListener {
-                val selectedDateInMillis = datePicker.selection ?: 0
-                val dateFormat = SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault())
-                val selectedDate = dateFormat.format(Date(selectedDateInMillis))
-
-                dateTextView.text = selectedDate
+                datePicker.show(childFragmentManager, "DATE_PICKER")
             }
 
-            datePicker.show(childFragmentManager, "DATE_PICKER")
-        }
+            eventTime.setOnClickListener {
+                val picker = MaterialTimePicker.Builder()
+                    .setTimeFormat(TimeFormat.CLOCK_12H)
+                    .build()
 
-        val selectedTimeTextView = binding.eventTime
-        selectedTimeTextView.setOnClickListener {
-            val picker = MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_12H)
-                .build()
+                picker.addOnPositiveButtonClickListener {
+                    val hour = picker.hour
+                    val minute = picker.minute
+                    val formattedTime =
+                        String.format("%02d:%02d %s", hour, minute, if (hour < 12) "AM" else "PM")
+                    eventTime.text = formattedTime
+                }
 
-            picker.addOnPositiveButtonClickListener {
-                val hour = picker.hour
-                val minute = picker.minute
-                val formattedTime =
-                    String.format("%02d:%02d %s", hour, minute, if (hour < 12) "AM" else "PM")
-                selectedTimeTextView.text = formattedTime
+                picker.show(childFragmentManager, "timePicker")
             }
 
-            picker.show(childFragmentManager, "timePicker")
-        }
+            // Массив с вариантами продолжительности времени
+            val durations = arrayOf("1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours")
 
+            // Создание адаптера для Spinner
+            val adapterHour = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, durations)
+            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            eventDuration.adapter = adapterHour
+            eventDuration.setSelection(0)
 
-        val hoursSpinner = binding.eventDuration
+            eventDuration.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    selectedDuration = parent?.getItemAtPosition(position).toString()
+                    // Действия при выборе продолжительности
+                }
 
-        // Массив с вариантами продолжительности времени
-        val durations = arrayOf("1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours")
-
-        // Создание адаптера для Spinner
-        val adapterHour = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, durations)
-        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-        hoursSpinner.adapter = adapterHour
-        hoursSpinner.setSelection(0)
-        // Обработчик выбора элемента из Spinner
-        hoursSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                selectedDuration = parent?.getItemAtPosition(position).toString()
-                // Действия при выборе продолжительности
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Действия, если ничего не выбрано
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // Действия, если ничего не выбрано
+                }
             }
         }
 
@@ -105,18 +99,36 @@ class NewContestFragment:Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val event = SportEvent(
-            eventId = 0,
             eventName = binding.eventName.text.toString(),
             location = binding.eventLocation.text.toString(),
             date = binding.eventDate.text.toString(),
             time = binding.eventTime.text.toString(),
             maxParticipants = binding.maxPlayersEditText.text.toString(),
-            sportCategory = ""
+            sportCategory = "",
+            duration = selectedDuration
         )
 
         binding.createButton.setOnClickListener {
             invalidate()
-            Service.addNewEventToDB(event)
+            Service.createNewEventToDB(event).addOnSuccessListener {
+                Toast.makeText(
+                    requireContext(),
+                    "You have succesfully created Event",
+                    Toast.LENGTH_LONG,
+                ).show()
+
+                binding.run {
+                    eventName.text.clear()
+                    eventTime.text = ""
+                    eventLevel.text.clear()
+                    eventDate.text = ""
+                    eventTime.text = ""
+                    eventDuration.setSelection(0)
+                    price.text.clear()
+                    maxPlayersEditText.text.clear()
+                    description.text.clear()
+                }
+            }
         }
 
     }
