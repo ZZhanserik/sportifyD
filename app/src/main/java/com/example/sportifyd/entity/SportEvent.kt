@@ -6,12 +6,8 @@ data class SportEvent(
     val eventId: Int,
     val eventName: String,
     val location: String,
-    val date: Date,
-    val time: Long,
+    val date: String,
+    val time: String,
     val sportCategory: String,
-    val maxParticipants: Int
-){
-    fun createEvent(){}
-
-    fun searchEvents(){}
-}
+    val maxParticipants: String
+)
