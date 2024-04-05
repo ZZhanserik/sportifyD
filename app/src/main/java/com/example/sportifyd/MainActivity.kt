@@ -1,13 +1,24 @@
-package com.example.sportifyd
+package com.example.sportify
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
+import com.example.sportify.data.Service
+import com.example.sportify.databinding.ActivityMainBinding
+import com.example.sportify.entity.User
+import com.example.sportifyd.R
 import com.example.sportifyd.databinding.ActivityMainBinding
+import com.example.sportifyd.entity.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,5 +49,28 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
         supportActionBar?.hide()
+
+        Service.getUsersDataRef().child(Service.getCurrentUser()?.uid.orEmpty())
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val userProfile = dataSnapshot.getValue(User::class.java)
+                    saveUserDataToSharedPreferences(userProfile!!, this@MainActivity)
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Обработка ошибок, если не удалось получить данные из базы данных
+                }
+            })
     }
+
+}
+
+fun saveUserDataToSharedPreferences(user: User, context: Context) {
+    val gson = Gson()
+    val userJsonString = gson.toJson(user)
+
+    val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putString("user_data", userJsonString)
+    editor.apply()
 }

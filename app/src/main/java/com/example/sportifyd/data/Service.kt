@@ -6,24 +6,24 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 
 object Service {
     private val auth: FirebaseAuth = Firebase.auth
     private val usersRef = FirebaseDatabase.getInstance().getReference("users")
     private val eventsRef = FirebaseDatabase.getInstance().getReference("events")
+    private val userPhotoStorageRef = FirebaseStorage.getInstance().getReference("userImages")
 
-    private fun getCurrentUser() = auth.currentUser
+
+    fun getCurrentUser() = auth.currentUser
 
     fun getEventsDataRef() = eventsRef
 
     fun getUsersDataRef() = usersRef
 
-
+    fun getUserPhotoStorageRef() = userPhotoStorageRef
     fun createUser(email: String, password: String): Task<AuthResult> {
         return auth.createUserWithEmailAndPassword(email, password)
     }
