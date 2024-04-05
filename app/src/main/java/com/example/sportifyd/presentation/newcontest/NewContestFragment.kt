@@ -22,9 +22,10 @@ import java.util.Locale
 
 class NewContestFragment:Fragment() {
 
-    private var selectedDuration: String = ""
+
     private var _binding : FragmentNewContestBinding? = null
     private val binding get() = _binding!!
+    private var selectedDuration: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,40 +101,13 @@ class NewContestFragment:Fragment() {
         return root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val event = SportEvent(
-            eventName = binding.eventName.text.toString(),
-            location = binding.eventLocation.text.toString(),
-            date = binding.eventDate.text.toString(),
-            time = binding.eventTime.text.toString(),
-            maxParticipants = binding.maxPlayersEditText.text.toString(),
-            sportCategory = "",
-            duration = selectedDuration
-        )
 
         binding.createButton.setOnClickListener {
             invalidate()
-            Service.createNewEventToDB(event).addOnSuccessListener {
-                Toast.makeText(
-                    requireContext(),
-                    "You have succesfully created Event",
-                    Toast.LENGTH_LONG,
-                ).show()
-
-                binding.run {
-                    eventName.text.clear()
-                    eventTime.text = ""
-                    eventLevel.text.clear()
-                    eventDate.text = ""
-                    eventTime.text = ""
-                    eventDuration.setSelection(0)
-                    price.text.clear()
-                    maxPlayersEditText.text.clear()
-                    description.text.clear()
-                }
-            }
         }
 
     }
+
     private fun invalidate() {
         binding.run {
             if (eventName.text.isNullOrEmpty() || eventLevel.text.isNullOrEmpty() || eventDate.text.isNullOrEmpty()) {
@@ -143,7 +117,44 @@ class NewContestFragment:Fragment() {
                     Toast.LENGTH_SHORT,
                 ).show()
                 return
+            } else {
+                createNewEvent()
             }
+        }
+    }
+
+    private fun createNewEvent() {
+
+        val event = SportEvent(
+            eventName = binding.eventName.text.toString(),
+            location = binding.eventLocation.text.toString(),
+            date = binding.eventDate.text.toString(),
+            time = binding.eventTime.text.toString(),
+            maxParticipants = binding.maxPlayersEditText.text.toString(),
+            sportCategory = "",
+            duration = selectedDuration
+        )
+        Service.createNewEventToDB(event).addOnSuccessListener {
+            Toast.makeText(
+                requireContext(),
+                "You have succesfully created Event",
+                Toast.LENGTH_LONG,
+            ).show()
+            clearFields()
+        }
+    }
+
+    private fun clearFields() {
+        binding.run {
+            eventName.text.clear()
+            eventTime.text = ""
+            eventLevel.text.clear()
+            eventDate.text = ""
+            eventTime.text = ""
+            eventDuration.setSelection(0)
+            price.text.clear()
+            maxPlayersEditText.text.clear()
+            description.text.clear()
         }
     }
     override fun onDestroyView() {

@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sportifyd.MainActivity
 import com.example.sportifyd.R
 import com.example.sportifyd.databinding.FragmentLoginBinding
+import com.example.sportifyd.presentation.pin.PinCodeFragment
 import com.example.sportifyd.presentation.registration.RegistrationFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -18,10 +19,11 @@ import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var viewModel: LoginViewModel
+
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private lateinit var auth: FirebaseAuth
+    private lateinit var viewModel: LoginViewModel
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -63,12 +65,12 @@ class LoginFragment : Fragment() {
                         if (it.isSuccessful) {
 
                             saveLoginState(true, auth.currentUser?.uid.orEmpty())
-                            requireContext().startActivity(
-                                Intent(
-                                    requireContext(),
-                                    MainActivity::class.java
-                                )
-                            )
+                            val fragment = PinCodeFragment()
+
+                            parentFragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .addToBackStack(null)
+                                .commit()
                         }
                 }
             }
@@ -77,7 +79,8 @@ class LoginFragment : Fragment() {
     }
 
     private fun saveLoginState(isLoggedIn: Boolean, userId: String) {
-        val sharedPref = activity?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE) ?: return
+        val sharedPref =
+            activity?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE) ?: return
         with(sharedPref.edit()) {
             putBoolean(getString(R.string.is_logged_in_key), isLoggedIn)
             putString(getString(R.string.user_id), userId)

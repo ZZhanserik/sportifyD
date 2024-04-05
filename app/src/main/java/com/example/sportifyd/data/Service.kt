@@ -20,6 +20,7 @@ object Service {
     private fun getCurrentUser() = auth.currentUser
 
     fun getEventsDataRef() = eventsRef
+
     fun getUsersDataRef() = usersRef
 
 

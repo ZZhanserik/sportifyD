@@ -9,10 +9,10 @@ import com.example.sportifyd.entity.SportEvent
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class PopularEventAdapter(options: FirebaseRecyclerOptions<SportEvent>) : FirebaseRecyclerAdapter<SportEvent, MyViewHolder>(options) {
+class PopularEventAdapter(options: FirebaseRecyclerOptions<SportEvent>) : FirebaseRecyclerAdapter<SportEvent, PopularEventViewHolder>(options) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularEventViewHolder {
+        return PopularEventViewHolder(
             ItemPopularEventsBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -22,7 +22,7 @@ class PopularEventAdapter(options: FirebaseRecyclerOptions<SportEvent>) : Fireba
     }
 
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: SportEvent) {
+    override fun onBindViewHolder(holder: PopularEventViewHolder, position: Int, model: SportEvent) {
         val popularEvent = convertSportEventToPopularEvent(model)
         holder.bind(popularEvent)
     }
@@ -36,21 +36,14 @@ class PopularEventAdapter(options: FirebaseRecyclerOptions<SportEvent>) : Fireba
         )
     }
 }
-                class MyViewHolder(val binding: ItemPopularEventsBinding) : ViewHolder(binding.root) {
-                    fun bind(item: PopularEvent) {
+class PopularEventViewHolder(val binding: ItemPopularEventsBinding) : ViewHolder(binding.root) {
+
+    fun bind(item: PopularEvent) {
                         binding.run {
                             eventName.text = item.eventName
                             eventStatus.text = item.eventStatus
                             eventPrice.text = item.pricePerPerson
                             eventParticipantsNumber.text = item.taken
                         }
-                    }
-                }
-                class DiffUtilCallback : DiffUtil.ItemCallback<PopularEvent>() {
-                    override fun areItemsTheSame(oldItem: PopularEvent, newItem: PopularEvent): Boolean {
-                        return oldItem == newItem
-                    }
-                    override fun areContentsTheSame(oldItem: PopularEvent, newItem: PopularEvent): Boolean {
-                        return oldItem == newItem
                     }
                 }

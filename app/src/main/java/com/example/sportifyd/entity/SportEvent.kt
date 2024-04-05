@@ -9,6 +9,7 @@ data class SportEvent(
     val date: String = "",
     val time: String = "",
     val sportCategory: String = "",
+    val participantsNumber: String = "",
     val maxParticipants: String = "",
     val duration: String = "",
     val status: String = SportEventStatus.OPEN.name,

@@ -17,10 +17,8 @@ import com.example.sportifyd.databinding.FragmentProfileBinding
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-    private var sharedPreferences: SharedPreferences? = null
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private var sharedPreferences: SharedPreferences? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -38,6 +38,7 @@ class RegistrationFragment : Fragment() {
 
         binding.createButton.setOnClickListener {
             binding.run {
+                invalidate()
                 val email = emailEditText.text.toString()
                 val password = passwordEditText.text.toString()
 
@@ -84,6 +85,24 @@ class RegistrationFragment : Fragment() {
                 .replace(R.id.fragment_container, fragment)
                 .addToBackStack(null)
                 .commit()
+        }
+    }
+    private fun invalidate() {
+        binding.run{
+            if (fullNameTv.text.isNullOrEmpty()
+                || userNameTv.text.isNullOrEmpty()
+                || phoneNumber.text.isNullOrEmpty()
+                || emailEditText.text.isNullOrEmpty()
+                || passwordEditText.text.isNullOrEmpty()
+                || confirmPassword.text.isNullOrEmpty())
+            {
+                Toast.makeText(
+                    requireContext(),
+                    "fill all fields",
+                    Toast.LENGTH_SHORT,
+                ).show()
+                return
+            }
         }
     }
 
