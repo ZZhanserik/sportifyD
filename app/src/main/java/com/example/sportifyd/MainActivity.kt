@@ -8,12 +8,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
-import com.example.sportify.data.Service
-import com.example.sportify.databinding.ActivityMainBinding
-import com.example.sportify.entity.User
-import com.example.sportifyd.R
+import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.ActivityMainBinding
 import com.example.sportifyd.entity.User
+import com.example.sportifyd.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

@@ -14,13 +14,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.sportify.R
-import com.example.sportify.SplashActivity
-import com.example.sportify.data.Service
-import com.example.sportify.databinding.FragmentProfileBinding
-import com.example.sportify.entity.User
 import com.example.sportifyd.R
 import com.example.sportifyd.SplashActivity
+import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.FragmentProfileBinding
 import com.example.sportifyd.entity.User
 import com.example.sportifyd.presentation.profile.ProfileViewModel

@@ -7,11 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.sportify.data.Service
-import com.example.sportify.databinding.FragmentSearchBinding
-import com.example.sportify.entity.SportEvent
-import com.example.sportify.presentation.home.adapter.PopularEventAdapter
-import com.example.sportify.presentation.home.adapter.PopularEventViewHolder
+import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.FragmentSearchBinding
 import com.example.sportifyd.entity.SportEvent
 import com.example.sportifyd.presentation.home.adapter.PopularEventAdapter
