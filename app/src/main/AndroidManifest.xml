@@ -17,8 +17,8 @@
         <activity
 
             android:name=".MainActivity"
-            android:exported="false"
-            android:label="@string/title_activity_base" />
+            android:label="@string/title_activity_base"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SplashActivity"
             android:exported="true">
