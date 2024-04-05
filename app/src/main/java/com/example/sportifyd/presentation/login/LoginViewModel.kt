@@ -1,4 +1,4 @@
-package com.example.sportifyd.presentation
+package com.example.sportifyd.presentation.login
 
 import androidx.lifecycle.ViewModel
 

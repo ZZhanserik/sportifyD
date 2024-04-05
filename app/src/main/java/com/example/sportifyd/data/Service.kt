@@ -22,29 +22,6 @@ object Service {
     fun getEventsDataRef() = eventsRef
     fun getUsersDataRef() = usersRef
 
-    fun getUsersAsMutableList(): List<User> {
-        val userList: MutableList<User> = mutableListOf()
-
-
-        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    val user = snapshot.getValue(User::class.java)
-                    user?.let {
-                        userList.add(it)
-                    }
-                }
-                // Теперь у вас есть список пользователей userList
-                // Вы можете использовать его здесь или передать в другой метод для обработки
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Обработка ошибок, если не удалось получить данные из базы данных
-            }
-        })
-
-        return userList
-    }
 
     fun createUser(email: String, password: String): Task<AuthResult> {
         return auth.createUserWithEmailAndPassword(email, password)

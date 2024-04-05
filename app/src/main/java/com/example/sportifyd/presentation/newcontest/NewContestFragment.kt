@@ -34,11 +34,13 @@ class NewContestFragment:Fragment() {
         _binding = FragmentNewContestBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val suggestions = arrayOf("Apple", "Banana", "Orange", "Pineapple", "Grapes")
-        val adapter = ArrayAdapter(requireContext(), R.layout.simple_dropdown_item_1line, suggestions)
 
         binding.run {
-            eventLevel.setAdapter(adapter)
+            val suggestions = arrayOf("Easy", "Hard", "Medium")
+            val adapterEventLevel = ArrayAdapter(requireActivity(), R.layout.simple_dropdown_item_1line, suggestions)
+            adapterEventLevel.notifyDataSetChanged()
+            eventLevel.setAdapter(adapterEventLevel)
+            eventLevel.setOnClickListener { eventLevel.showDropDown() }
 
             eventDate.setOnClickListener {
                 val builder = MaterialDatePicker.Builder.datePicker()
@@ -74,7 +76,7 @@ class NewContestFragment:Fragment() {
 
             // Создание адаптера для Spinner
             val adapterHour = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, durations)
-            adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            adapterEventLevel.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             eventDuration.adapter = adapterHour
             eventDuration.setSelection(0)
 

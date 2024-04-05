@@ -1,4 +1,4 @@
-package com.example.sportifyd.presentation
+package com.example.sportifyd.presentation.registration
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import com.example.sportifyd.R
 import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.FragmentRegistrationBinding
 import com.example.sportifyd.entity.User
+import com.example.sportifyd.presentation.login.LoginFragment
 
 class RegistrationFragment : Fragment() {
 

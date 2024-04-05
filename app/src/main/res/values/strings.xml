@@ -37,4 +37,6 @@
     <string name="current_events">Current Events</string>
     <string name="search_event">Search Event</string>
     <string name="organizer">Organizer</string>
+    <string name="is_logged_in_key">is_logged_in</string>
+    <string name="user_id">user_id</string>
 </resources>

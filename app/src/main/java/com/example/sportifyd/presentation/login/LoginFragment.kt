@@ -1,6 +1,7 @@
-package com.example.sportifyd.presentation
+package com.example.sportifyd.presentation.login
 
 import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sportifyd.MainActivity
 import com.example.sportifyd.R
 import com.example.sportifyd.databinding.FragmentLoginBinding
+import com.example.sportifyd.presentation.registration.RegistrationFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -40,8 +42,8 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         auth = Firebase.auth
-        binding.run{
-            registrationPageButton.setOnClickListener{
+        binding.run {
+            registrationPageButton.setOnClickListener {
                 val fragment = RegistrationFragment()
 
                 parentFragmentManager.beginTransaction()
@@ -49,18 +51,37 @@ class LoginFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
-            createButton.setOnClickListener{
-                if (emailEditText.text.isNullOrEmpty())return@setOnClickListener
-                if (passwordEditText.text.isNullOrEmpty())return@setOnClickListener
+            createButton.setOnClickListener {
+                if (emailEditText.text.isNullOrEmpty()) return@setOnClickListener
+                if (passwordEditText.text.isNullOrEmpty()) return@setOnClickListener
 
-                auth.signInWithEmailAndPassword(emailEditText.text.toString(), passwordEditText.text.toString()).addOnCompleteListener {
-                    if (it.isSuccessful){
+                auth.signInWithEmailAndPassword(
+                    emailEditText.text.toString(),
+                    passwordEditText.text.toString()
+                )
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
 
-                        requireContext().startActivity(Intent(requireContext(), MainActivity::class.java))
-                    }
+                            saveLoginState(true, auth.currentUser?.uid.orEmpty())
+                            requireContext().startActivity(
+                                Intent(
+                                    requireContext(),
+                                    MainActivity::class.java
+                                )
+                            )
+                        }
                 }
             }
 
+        }
+    }
+
+    private fun saveLoginState(isLoggedIn: Boolean, userId: String) {
+        val sharedPref = activity?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE) ?: return
+        with(sharedPref.edit()) {
+            putBoolean(getString(R.string.is_logged_in_key), isLoggedIn)
+            putString(getString(R.string.user_id), userId)
+            apply()
         }
     }
 
