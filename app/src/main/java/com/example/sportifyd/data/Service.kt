@@ -32,10 +32,16 @@ object Service {
     }
     fun createNewEventToDB(event: SportEvent): Task<Void> {
         val key = eventsRef.push().key ?: ""
-        return eventsRef.child(key).setValue(event)
+        return eventsRef.child(key).setValue(event.copy(eventId = key))
     }
-    fun subscribeToEvent(eventId: String) {
+    fun subscribeToEvent(eventId: String, onSuccess: () -> Unit) {
         usersRef.child(getCurrentUser()?.uid ?: "").child("events").child(eventId).setValue(true)
-        eventsRef.child("participants").child(getCurrentUser()?.uid.orEmpty()).setValue(true);
+            .addOnSuccessListener {
+                eventsRef.child(eventId).child("participants")
+                    .child(getCurrentUser()?.uid.orEmpty())
+                    .setValue(true).addOnSuccessListener {
+                        onSuccess.invoke()
+                    }
+            }
     }
 }

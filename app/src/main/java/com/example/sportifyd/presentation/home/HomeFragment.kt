@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sportifyd.databinding.FragmentHomeBinding
 import com.example.sportifyd.entity.SportEvent
 import com.example.sportifyd.entity.User
+import com.example.sportifyd.presentation.EventDetailsBottomSheet
 import com.example.sportifyd.presentation.home.adapter.PopularEventViewHolder
 import com.example.sportifyd.presentation.home.adapter.PopularEventAdapter
 import com.example.sportifyd.presentation.home.adapter.PopularOrganizers
@@ -76,7 +77,10 @@ class HomeFragment : Fragment() {
 
     private fun loadData() {
         popularEvents = FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(Service.getEventsDataRef(), SportEvent::class.java).build()
-        adapterEvents = PopularEventAdapter(popularEvents)
+        adapterEvents = PopularEventAdapter(popularEvents) {
+            val bottomSheetFragment = EventDetailsBottomSheet.newInstance(it)
+            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        }
         adapterEvents.startListening()
         binding.popularEventsRv.adapter = adapterEvents
     }

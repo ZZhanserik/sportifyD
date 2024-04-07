@@ -54,7 +54,7 @@ class SearchFragment : Fragment() {
         popularEvents =
             FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java)
                 .build()
-        adapterEvents = PopularEventAdapter(popularEvents)
+        adapterEvents = PopularEventAdapter(popularEvents, {})
         adapterEvents.startListening()
         binding.popularEventsRv.adapter = adapterEvents
     }
