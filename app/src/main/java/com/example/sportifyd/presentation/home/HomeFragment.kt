@@ -26,7 +26,9 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var popularEvents: FirebaseRecyclerOptions<SportEvent>
-    private lateinit var adapterEvents: FirebaseRecyclerAdapter<SportEvent, PopularEventViewHolder>
+    private lateinit var popularEventsAdapter: FirebaseRecyclerAdapter<SportEvent, PopularEventViewHolder>
+    private lateinit var myEvents: FirebaseRecyclerOptions<SportEvent>
+    private lateinit var myEventsAdapter: FirebaseRecyclerAdapter<SportEvent, PopularEventViewHolder>
     private var dataList = mutableListOf<PopularOrganizers>()
     private lateinit var adapterOrganizers: PopularOrganizersAdapter
 
@@ -66,7 +68,8 @@ class HomeFragment : Fragment() {
 
         binding.popularOrganizersRv.adapter = adapterOrganizers
 
-        loadData()
+        loadPopularEvents()
+        loadMyEvents()
     }
 
     private fun updateData(newDataList: List<PopularOrganizers>) {
@@ -75,14 +78,25 @@ class HomeFragment : Fragment() {
         adapterOrganizers.notifyDataSetChanged()
     }
 
-    private fun loadData() {
+    private fun loadPopularEvents() {
         popularEvents = FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(Service.getEventsDataRef(), SportEvent::class.java).build()
-        adapterEvents = PopularEventAdapter(popularEvents) {
+        popularEventsAdapter = PopularEventAdapter(popularEvents) {
             val bottomSheetFragment = EventDetailsBottomSheet.newInstance(it)
             bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
         }
-        adapterEvents.startListening()
-        binding.popularEventsRv.adapter = adapterEvents
+        popularEventsAdapter.startListening()
+        binding.popularEventsRv.adapter = popularEventsAdapter
+    }
+
+    private fun loadMyEvents() {
+        val query = Service.getEventsDataRef().orderByChild("participants/${Service.getCurrentUser()?.uid}").equalTo(true)
+        myEvents = FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java).build()
+        myEventsAdapter = PopularEventAdapter(myEvents) {
+            val bottomSheetFragment = EventDetailsBottomSheet.newInstance(it)
+            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        }
+        myEventsAdapter.startListening()
+        binding.myEvents.adapter = myEventsAdapter
     }
 
     override fun onDestroyView() {

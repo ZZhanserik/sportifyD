@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.sportifyd.R
 import com.example.sportifyd.SplashActivity
 import com.example.sportifyd.data.Service
@@ -109,6 +110,7 @@ class ProfileFragment : Fragment() {
         binding.run {
             Glide.with(this@ProfileFragment)
                 .load(uri?:loadUserDataFromSharedPreferences()?.photo)
+                .apply(RequestOptions.circleCropTransform())
                 .into(profileImage)
 
             icOnline.isVisible = false
