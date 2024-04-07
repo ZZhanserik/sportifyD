@@ -2,6 +2,7 @@ package com.example.sportifyd.presentation.home
 
 import PopularOrganizersAdapter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.example.sportifyd.data.Service
@@ -47,7 +48,9 @@ class HomeFragment : Fragment() {
 
         val userList: MutableList<User> = mutableListOf()
 
-        Service.getUsersDataRef().addListenerForSingleValueEvent(object : ValueEventListener {
+        val query = Service.getUsersDataRef().orderByChild("organizedEventsNumber")
+
+        query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     val user = snapshot.getValue(User::class.java)
@@ -55,8 +58,10 @@ class HomeFragment : Fragment() {
                         userList.add(it)
                     }
                 }
-
-                updateData(mapUsersToPopularOrganizers(userList))
+                userList.sortByDescending { it.organizedEventsNumber }
+                userList.take(4)
+                Log.d("USERS List", "${userList.take(4)}")
+                updateData(mapUsersToPopularOrganizers(userList.take(4)))
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

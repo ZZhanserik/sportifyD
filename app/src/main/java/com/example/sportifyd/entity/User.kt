@@ -8,4 +8,6 @@ data class User(
     val password: String="",
     val bio: String = "",
     val photo: String = "",
+    val events: Map<String, Boolean> = mapOf(),
+    val organizedEventsNumber: Int = 0,
 )
