@@ -28,15 +28,24 @@ class EventDetailsBottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.createButton.setOnClickListener {
-            Service.subscribeToEvent(item.eventId){
+        binding.run {
+            createButton.setOnClickListener {
+                Service.subscribeToEvent(item) {
 
-                Toast.makeText(
-                    requireContext(),
-                    "You have joined",
-                    Toast.LENGTH_SHORT
-                ).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "You have joined",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
+            eventName.text = item.eventName
+            eventLevel.text = item.level
+            eventLocation.text = item.location
+            eventPrice.text = item.price
+            eventPlayersNumber.text = "${item.participantsNumber}/${item.maxParticipants}"
+            eventDuration.text = item.duration
+            eventTime.text = item.time
         }
     }
 

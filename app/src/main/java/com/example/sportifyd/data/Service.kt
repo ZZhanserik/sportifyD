@@ -1,6 +1,7 @@
 package com.example.sportifyd.data
 
 import com.example.sportifyd.entity.SportEvent
+import com.example.sportifyd.entity.SportEventStatus
 import com.example.sportifyd.entity.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -34,10 +35,15 @@ object Service {
         val key = eventsRef.push().key ?: ""
         return eventsRef.child(key).setValue(event.copy(eventId = key))
     }
-    fun subscribeToEvent(eventId: String, onSuccess: () -> Unit) {
-        usersRef.child(getCurrentUser()?.uid ?: "").child("events").child(eventId).setValue(true)
+    fun subscribeToEvent(sportEvent: SportEvent, onSuccess: () -> Unit) {
+        usersRef.child(getCurrentUser()?.uid ?: "").child("events").child(sportEvent.eventId).setValue(true)
             .addOnSuccessListener {
-                eventsRef.child(eventId).child("participants")
+                if(sportEvent.participantsNumber == sportEvent.maxParticipants){
+                    eventsRef.child(sportEvent.eventId).child("status").setValue(SportEventStatus.CLOSED.name)
+                }
+                val participantNumber = sportEvent.participantsNumber.toInt() + 1
+                eventsRef.child(sportEvent.eventId).child("participantsNumber").setValue(participantNumber.toString())
+                eventsRef.child(sportEvent.eventId).child("participants")
                     .child(getCurrentUser()?.uid.orEmpty())
                     .setValue(true).addOnSuccessListener {
                         onSuccess.invoke()

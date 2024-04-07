@@ -44,9 +44,9 @@ class PopularEventViewHolder(val binding: ItemPopularEventsBinding, private val 
     private fun convertSportEventToPopularEvent(sportEvent: SportEvent): PopularEvent {
         return PopularEvent(
             eventName = sportEvent.eventName,
-            eventStatus = "Some Status", // Пример значения для статуса события
-            pricePerPerson = "Some Price", // Пример значения для цены
-            taken = "Some Taken" // Пример значения для занятости
+            eventStatus = sportEvent.status, // Пример значения для статуса события
+            pricePerPerson = sportEvent.price, // Пример значения для цены
+            taken = "${sportEvent.participantsNumber}/${sportEvent.maxParticipants}"
         )
     }
 }

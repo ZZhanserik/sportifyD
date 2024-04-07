@@ -22,7 +22,8 @@ import java.util.Locale
 
 class NewContestFragment:Fragment() {
 
-
+    private var formattedTimeForDataRef: String = ""
+    private var selectedDateForDataRef: String = ""
     private var _binding : FragmentNewContestBinding? = null
     private val binding get() = _binding!!
     private var selectedDuration: String = ""
@@ -38,7 +39,8 @@ class NewContestFragment:Fragment() {
 
         binding.run {
             val suggestions = arrayOf("Easy", "Hard", "Medium")
-            val adapterEventLevel = ArrayAdapter(requireActivity(), R.layout.simple_dropdown_item_1line, suggestions)
+            val adapterEventLevel =
+                ArrayAdapter(requireActivity(), R.layout.simple_dropdown_item_1line, suggestions)
             adapterEventLevel.notifyDataSetChanged()
             eventLevel.setAdapter(adapterEventLevel)
             eventLevel.setOnClickListener { eventLevel.showDropDown() }
@@ -49,7 +51,9 @@ class NewContestFragment:Fragment() {
                 datePicker.addOnPositiveButtonClickListener {
                     val selectedDateInMillis = datePicker.selection ?: 0
                     val dateFormat = SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault())
+                    val dateFormatForDataRef = SimpleDateFormat("yyyy-MM-dd ", Locale.getDefault())
                     val selectedDate = dateFormat.format(Date(selectedDateInMillis))
+                    selectedDateForDataRef = dateFormatForDataRef.format(Date(selectedDateInMillis))
                     eventDate.text = selectedDate
                 }
 
@@ -66,17 +70,16 @@ class NewContestFragment:Fragment() {
                     val minute = picker.minute
                     val formattedTime =
                         String.format("%02d:%02d %s", hour, minute, if (hour < 12) "AM" else "PM")
+                    formattedTimeForDataRef = String.format("%02d:%02d", hour, minute)
                     eventTime.text = formattedTime
                 }
 
                 picker.show(childFragmentManager, "timePicker")
             }
 
-            // Массив с вариантами продолжительности времени
             val durations = arrayOf("1 hour", "2 hours", "3 hours", "4 hours", "5 hours", "6 hours")
-
-            // Создание адаптера для Spinner
-            val adapterHour = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, durations)
+            val adapterHour =
+                ArrayAdapter(requireContext(), R.layout.simple_spinner_item, durations)
             adapterEventLevel.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             eventDuration.adapter = adapterHour
             eventDuration.setSelection(0)
@@ -89,11 +92,10 @@ class NewContestFragment:Fragment() {
                     id: Long
                 ) {
                     selectedDuration = parent?.getItemAtPosition(position).toString()
-                    // Действия при выборе продолжительности
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // Действия, если ничего не выбрано
+                    selectedDuration = parent?.getItemAtPosition(0).toString()
                 }
             }
         }
@@ -110,7 +112,15 @@ class NewContestFragment:Fragment() {
 
     private fun invalidate() {
         binding.run {
-            if (eventName.text.isNullOrEmpty() || eventLevel.text.isNullOrEmpty() || eventDate.text.isNullOrEmpty()) {
+            if (eventName.text.isNullOrEmpty()
+                || eventLevel.text.isNullOrEmpty()
+                || eventLocation.text.isNullOrEmpty()
+                || formattedTimeForDataRef.isBlank()
+                || selectedDateForDataRef.isBlank()
+                || price.text.isNullOrEmpty()
+                || maxPlayersEditText.text.isNullOrEmpty()
+                || description.text.isNullOrEmpty()
+            ) {
                 Toast.makeText(
                     requireContext(),
                     "fill all fields",
@@ -124,35 +134,38 @@ class NewContestFragment:Fragment() {
     }
 
     private fun createNewEvent() {
-
-        val event = SportEvent(
-            eventName = binding.eventName.text.toString(),
-            location = binding.eventLocation.text.toString(),
-            date = binding.eventDate.text.toString(),
-            time = binding.eventTime.text.toString(),
-            maxParticipants = binding.maxPlayersEditText.text.toString(),
-            sportCategory = "",
-            duration = selectedDuration
-        )
-        Service.createNewEventToDB(event).addOnSuccessListener {
-            Toast.makeText(
-                requireContext(),
-                "You have succesfully created Event",
-                Toast.LENGTH_LONG,
-            ).show()
-            clearFields()
+        binding.run {
+            val event = SportEvent(
+                eventName = eventName.text.toString(),
+                level = eventLevel.text.toString(),
+                location = eventLocation.text.toString(),
+                price = price.text.toString() + "TG",
+                date = selectedDateForDataRef,
+                time = formattedTimeForDataRef,
+                duration = selectedDuration,
+                sportCategory = "",
+                maxParticipants = maxPlayersEditText.text.toString()
+            )
+            Service.createNewEventToDB(event).addOnSuccessListener {
+                Toast.makeText(
+                    requireContext(),
+                    "You have succesfully created Event",
+                    Toast.LENGTH_LONG,
+                ).show()
+                clearFields()
+            }
         }
     }
 
     private fun clearFields() {
         binding.run {
             eventName.text.clear()
-            eventTime.text = ""
             eventLevel.text.clear()
+            eventLocation.text.clear()
+            price.text.clear()
             eventDate.text = ""
             eventTime.text = ""
             eventDuration.setSelection(0)
-            price.text.clear()
             maxPlayersEditText.text.clear()
             description.text.clear()
         }
