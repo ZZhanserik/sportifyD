@@ -144,7 +144,8 @@ class NewContestFragment:Fragment() {
                 time = formattedTimeForDataRef,
                 duration = selectedDuration,
                 sportCategory = "",
-                maxParticipants = maxPlayersEditText.text.toString()
+                maxParticipants = maxPlayersEditText.text.toString().toInt(),
+                description = description.text.toString()
             )
             Service.createNewEventToDB(event).addOnSuccessListener {
                 Toast.makeText(

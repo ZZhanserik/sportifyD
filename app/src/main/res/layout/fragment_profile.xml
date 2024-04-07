@@ -84,7 +84,7 @@
 
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/full_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Stone Stellar"
@@ -295,7 +295,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:gravity="center"
             android:text="Log out"
             android:textColor="#FF0000"
             android:textSize="20dp"

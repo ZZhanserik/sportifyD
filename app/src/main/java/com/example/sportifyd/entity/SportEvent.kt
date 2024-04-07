@@ -13,9 +13,10 @@ data class SportEvent(
     val duration: String = "",
     val status: String = SportEventStatus.OPEN.name,
     val sportCategory: String = "",
-    val participantsNumber: String = "",
-    val maxParticipants: String = "",
+    val participantsNumber: Int = 0,
+    val maxParticipants: Int = 0,
     val participants: Map<String, Boolean> = mapOf(),
+    val description: String = ""
 ) : Serializable
 
 enum class SportEventStatus {

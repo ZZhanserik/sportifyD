@@ -43,9 +43,16 @@ class EventDetailsBottomSheet : BottomSheetDialogFragment() {
             eventLevel.text = item.level
             eventLocation.text = item.location
             eventPrice.text = item.price
-            eventPlayersNumber.text = "${item.participantsNumber}/${item.maxParticipants}"
+            eventPlayersNumber.text = buildString {
+                append(item.participantsNumber)
+                append("/")
+                append(item.maxParticipants)
+            }
             eventDuration.text = item.duration
-            eventTime.text = item.time
+            eventTime.text = buildString {
+                append(item.time)
+                append(item.date)
+            }
         }
     }
 

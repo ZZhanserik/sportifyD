@@ -46,29 +46,33 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         sharedPreferences = context?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val navController = findNavController()
-        binding.accountInformation.setOnClickListener {
-            navController.navigate(R.id.action_navigation_profile_to_accountInformationFragment)
-        }
+        val user = loadUserDataFromSharedPreferences()
 
-        binding.logoutButton.setOnClickListener {
-            sharedPreferences?.edit()?.clear()?.apply()
-
-            val intent = Intent(requireActivity(), SplashActivity::class.java)
-            startActivity(intent)
-        }
-
-        if (loadUserDataFromSharedPreferences()?.photo != null) {
+        if (user?.photo != null) {
             setPhotoProfile()
         }
 
-        binding.imageProfile.setOnClickListener {
-            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-                type = "image/*"
+        binding.run {
+            fullNameTv.text = user?.fullName
+
+            imageProfile.setOnClickListener {
+                val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                    type = "image/*"
+                }
+                startActivityForResult(intent, REQUEST_CODE_IMAGE)
             }
-            startActivityForResult(intent, REQUEST_CODE_IMAGE)
+            accountInformation.setOnClickListener {
+                navController.navigate(R.id.action_navigation_profile_to_accountInformationFragment)
+            }
+
+            logoutButton.setOnClickListener {
+                sharedPreferences?.edit()?.clear()?.apply()
+
+                val intent = Intent(requireActivity(), SplashActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -109,7 +113,7 @@ class ProfileFragment : Fragment() {
     private fun setPhotoProfile(uri: Uri? = null) {
         binding.run {
             Glide.with(this@ProfileFragment)
-                .load(uri?:loadUserDataFromSharedPreferences()?.photo)
+                .load(uri ?: loadUserDataFromSharedPreferences()?.photo)
                 .apply(RequestOptions.circleCropTransform())
                 .into(profileImage)
 

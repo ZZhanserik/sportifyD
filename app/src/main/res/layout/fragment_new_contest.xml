@@ -183,7 +183,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="10dp"
                 android:hint="@string/description"
-                android:inputType="numberDecimal" />
+                android:inputType="text" />
 
             <LinearLayout
                 android:layout_width="match_parent"

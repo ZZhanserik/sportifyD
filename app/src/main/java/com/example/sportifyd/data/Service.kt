@@ -41,8 +41,8 @@ object Service {
                 if(sportEvent.participantsNumber == sportEvent.maxParticipants){
                     eventsRef.child(sportEvent.eventId).child("status").setValue(SportEventStatus.CLOSED.name)
                 }
-                val participantNumber = sportEvent.participantsNumber.toInt() + 1
-                eventsRef.child(sportEvent.eventId).child("participantsNumber").setValue(participantNumber.toString())
+                val participantNumber = sportEvent.participantsNumber + 1
+                eventsRef.child(sportEvent.eventId).child("participantsNumber").setValue(participantNumber)
                 eventsRef.child(sportEvent.eventId).child("participants")
                     .child(getCurrentUser()?.uid.orEmpty())
                     .setValue(true).addOnSuccessListener {

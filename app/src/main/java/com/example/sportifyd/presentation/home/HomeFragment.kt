@@ -79,7 +79,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadPopularEvents() {
-        popularEvents = FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(Service.getEventsDataRef(), SportEvent::class.java).build()
+        val query = Service.getEventsDataRef().orderByChild("participantsNumber").limitToLast(4)
+        popularEvents = FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java).build()
         popularEventsAdapter = PopularEventAdapter(popularEvents) {
             val bottomSheetFragment = EventDetailsBottomSheet.newInstance(it)
             bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
