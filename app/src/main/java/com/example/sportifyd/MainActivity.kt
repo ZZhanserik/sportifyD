@@ -1,4 +1,4 @@
-package com.example.sportify
+package com.example.sportifyd
 
 import android.content.Context
 import android.os.Bundle

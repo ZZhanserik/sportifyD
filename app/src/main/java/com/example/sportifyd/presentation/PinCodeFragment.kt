@@ -1,4 +1,4 @@
-package com.example.sportifyd.presentation.pin
+package com.example.sportifyd.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -16,7 +16,6 @@ import com.example.sportifyd.databinding.FragmentPinCodeBinding
 
 class PinCodeFragment : Fragment() {
 
-    private lateinit var viewModel: PinCodeViewModel
 
     private var _binding: FragmentPinCodeBinding? = null
     private val binding get() = _binding!!
@@ -29,13 +28,7 @@ class PinCodeFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PinCodeViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (getPin() == null) {
             binding.run {
                 setPinBlock.visibility = VISIBLE

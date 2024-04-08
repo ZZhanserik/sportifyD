@@ -1,4 +1,4 @@
-package com.example.sportifyd.presentation.registration
+package com.example.sportifyd.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,19 +11,12 @@ import com.example.sportifyd.R
 import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.FragmentRegistrationBinding
 import com.example.sportifyd.entity.User
-import com.example.sportifyd.presentation.login.LoginFragment
 
 class RegistrationFragment : Fragment() {
 
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: RegistrationViewModel
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(RegistrationViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

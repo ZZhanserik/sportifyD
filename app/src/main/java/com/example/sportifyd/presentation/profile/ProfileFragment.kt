@@ -1,11 +1,10 @@
-package com.example.sportify.presentation.profile
+package com.example.sportifyd.presentation.profile
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import com.example.sportifyd.SplashActivity
 import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.FragmentProfileBinding
 import com.example.sportifyd.entity.User
-import com.example.sportifyd.presentation.profile.ProfileViewModel
 import com.google.gson.Gson
 
 class ProfileFragment : Fragment() {

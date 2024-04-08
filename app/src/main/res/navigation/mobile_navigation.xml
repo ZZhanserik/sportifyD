@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.sportify.presentation.search.SearchFragment"
+        android:name="com.example.sportifyd.presentation.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" >
     </fragment>
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.sportify.presentation.profile.ProfileFragment"
+        android:name="com.example.sportifyd.presentation.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" >
         <action

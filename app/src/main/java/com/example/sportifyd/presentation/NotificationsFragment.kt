@@ -1,4 +1,4 @@
-package com.example.sportifyd.presentation.notifications
+package com.example.sportifyd.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -33,12 +33,9 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-        }
+
         return root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

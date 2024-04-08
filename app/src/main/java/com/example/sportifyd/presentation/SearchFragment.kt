@@ -1,4 +1,4 @@
-package com.example.sportify.presentation.search
+package com.example.sportifyd.presentation
 
 import android.os.Bundle
 import android.text.Editable
