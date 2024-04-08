@@ -97,6 +97,10 @@ class NewContestFragment:Fragment() {
                     selectedDuration = parent?.getItemAtPosition(0).toString()
                 }
             }
+
+            freeCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) price.text.clear()
+            }
         }
 
         return root
@@ -116,7 +120,7 @@ class NewContestFragment:Fragment() {
                 || eventLocation.text.isNullOrEmpty()
                 || formattedTimeForDataRef.isBlank()
                 || selectedDateForDataRef.isBlank()
-                || price.text.isNullOrEmpty()
+                || (price.text.isNullOrEmpty() && !freeCheckbox.isChecked)
                 || maxPlayersEditText.text.isNullOrEmpty()
                 || description.text.isNullOrEmpty()
             ) {
@@ -146,7 +150,7 @@ class NewContestFragment:Fragment() {
                 maxParticipants = maxPlayersEditText.text.toString().toInt(),
                 description = description.text.toString()
             )
-            Service.createNewEventToDB(event).addOnSuccessListener {
+            Service.createNewEventToDB(event) {
                 Toast.makeText(
                     requireContext(),
                     "You have succesfully created Event",
