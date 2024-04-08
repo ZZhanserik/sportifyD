@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.FragmentNotificationsBinding
 import com.example.sportifyd.entity.SportEvent
@@ -27,7 +26,7 @@ class NotificationsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var popularEvents: FirebaseRecyclerOptions<SportEvent>
     private lateinit var adapterEvents: FirebaseRecyclerAdapter<SportEvent, PopularEventViewHolder>
-    private lateinit var adapterForMostPopularEvent: MyEventsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,8 +39,7 @@ class NotificationsFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         loadDataNearestWeek()
-        loadDataRV2()
-    }
+         }
     private fun loadDataNearestWeek() {
 
         val query = getQueryForNearestEvents()
@@ -51,34 +49,6 @@ class NotificationsFragment : Fragment() {
         adapterEvents = PopularEventAdapter(popularEvents, {})
         adapterEvents.startListening()
         binding.popularEventsRv.adapter = adapterEvents
-    }
-    private fun loadDataRV2() {
-        getQueryForNearestEvents().addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var maxParticipants = 0
-                var maxParticipantEvent: SportEvent? = null
-
-                // Проходим по всем полученным событиям
-                for (eventSnapshot in dataSnapshot.children) {
-                    val event = eventSnapshot.getValue(SportEvent::class.java)
-
-                    // Проверяем, является ли текущий ивент событием с наибольшим количеством участников
-                    if (event != null && event.participantsNumber > maxParticipants) {
-                        maxParticipants = event.participantsNumber
-                        maxParticipantEvent = event
-                    }
-                }
-                val list = listOf(maxParticipantEvent)
-                adapterForMostPopularEvent = MyEventsAdapter( {})
-                adapterForMostPopularEvent.submitList(list)
-                binding.popularOrganizersRv.adapter = adapterEvents
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Обработка ошибок, если запрос к базе данных не удался
-            }
-        })
-
     }
 
     private fun getQueryForNearestEvents(): Query {

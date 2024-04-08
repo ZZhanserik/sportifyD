@@ -1,4 +1,4 @@
-package com.example.sportifyd.presentation
+package com.example.sportifyd.presentation.home
 
 import PopularOrganizersAdapter
 import android.os.Bundle
@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sportifyd.databinding.FragmentHomeBinding
 import com.example.sportifyd.entity.SportEvent
 import com.example.sportifyd.entity.User
-import com.example.sportifyd.presentation.home.HomeViewModel
+import com.example.sportifyd.presentation.EventDetailsBottomSheet
 import com.example.sportifyd.presentation.home.adapter.PopularEventViewHolder
 import com.example.sportifyd.presentation.home.adapter.PopularEventAdapter
 import com.example.sportifyd.presentation.home.adapter.PopularOrganizers

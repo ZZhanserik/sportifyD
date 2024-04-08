@@ -65,6 +65,11 @@ class ProfileFragment : Fragment() {
                 navController.navigate(R.id.action_navigation_profile_to_accountInformationFragment)
             }
 
+            changePassword.setOnClickListener {
+                navController.navigate(R.id.action_navigation_profile_to_changePasswordFragment)
+            }
+
+
             logoutButton.setOnClickListener {
                 sharedPreferences?.edit()?.clear()?.apply()
 
