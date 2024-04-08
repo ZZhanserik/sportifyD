@@ -117,7 +117,8 @@ class HomeFragment : Fragment() {
             val organizer = PopularOrganizers(
                 organizerName = user.fullName,
                 organizerStatus = user.userName,
-                category = "Default Category" // Здесь вы можете установить значение по умолчанию или использовать другие поля из объекта User
+                category = "Default Category",
+                photo = user.photo,
             )
             popularOrganizersList.add(organizer)
         }

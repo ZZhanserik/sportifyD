@@ -52,9 +52,11 @@ class SearchFragment : Fragment() {
         val query = Service.getEventsDataRef().orderByChild("eventName").startAt(data)
             .endAt(data + "\uf8ff")
         popularEvents =
-            FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java)
-                .build()
-        adapterEvents = PopularEventAdapter(popularEvents, {})
+            FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java).build()
+        adapterEvents = PopularEventAdapter(popularEvents) {
+            val bottomSheetFragment = EventDetailsBottomSheet.newInstance(it)
+            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        }
         adapterEvents.startListening()
         binding.popularEventsRv.adapter = adapterEvents
     }

@@ -43,10 +43,11 @@ class NotificationsFragment : Fragment() {
     private fun loadDataNearestWeek() {
 
         val query = getQueryForNearestEvents()
-        popularEvents =
-            FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java)
-                .build()
-        adapterEvents = PopularEventAdapter(popularEvents, {})
+        popularEvents = FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java).build()
+        adapterEvents = PopularEventAdapter(popularEvents) {
+            val bottomSheetFragment = EventDetailsBottomSheet.newInstance(it)
+            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        }
         adapterEvents.startListening()
         binding.popularEventsRv.adapter = adapterEvents
     }
