@@ -69,6 +69,7 @@ class PinCodeFragment : Fragment() {
                             MainActivity::class.java
                         )
                     )
+                    requireActivity().finish()
                 } else {
                     Toast.makeText(
                         requireContext(),

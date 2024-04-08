@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.sportifyd.R
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.lifecycle.ViewModelProvider
 import com.example.sportifyd.databinding.FragmentAccountEditBinding
 import com.example.sportifyd.entity.User
@@ -17,6 +20,7 @@ import com.google.gson.Gson
 
 class AccountInformationFragment: Fragment() {
 
+    private lateinit var bottomNavigationView: BottomNavigationView
     private var _binding: FragmentAccountEditBinding? = null
 
     // This property is only valid between onCreateView and
@@ -29,9 +33,8 @@ class AccountInformationFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val profileViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
-
+        bottomNavigationView = requireActivity().findViewById(R.id.nav_view)
+        bottomNavigationView.isVisible = false
         _binding = FragmentAccountEditBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -39,6 +42,10 @@ class AccountInformationFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        binding.toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
 
         binding.button.setOnClickListener {
             if (invalidate()) {
@@ -118,6 +125,11 @@ class AccountInformationFragment: Fragment() {
         } else {
             return null
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        bottomNavigationView.isVisible = true
     }
 
     companion object {

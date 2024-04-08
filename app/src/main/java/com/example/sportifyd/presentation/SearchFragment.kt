@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import androidx.activity.addCallback
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -33,7 +34,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){}
         loadData("")
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {

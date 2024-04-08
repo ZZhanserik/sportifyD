@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.addCallback
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.sportifyd.data.Service
@@ -106,6 +107,8 @@ class NewContestFragment:Fragment() {
         return root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){}
 
         binding.createButton.setOnClickListener {
             invalidate()

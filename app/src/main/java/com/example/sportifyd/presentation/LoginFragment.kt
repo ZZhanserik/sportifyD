@@ -11,6 +11,8 @@ import com.example.sportifyd.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import android.widget.Toast
+import androidx.activity.addCallback
 
 class LoginFragment : Fragment() {
 
@@ -49,21 +51,27 @@ class LoginFragment : Fragment() {
                     emailEditText.text.toString(),
                     passwordEditText.text.toString()
                 )
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
+                    .addOnSuccessListener {
+                        saveLoginState(true, auth.currentUser?.uid.orEmpty())
+                        val fragment = PinCodeFragment()
 
-                            saveLoginState(true, auth.currentUser?.uid.orEmpty())
-                            val fragment = PinCodeFragment()
-
-                            parentFragmentManager.beginTransaction()
-                                .replace(R.id.fragment_container, fragment)
-                                .addToBackStack(null)
-                                .commit()
-                        }
+                    parentFragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .addToBackStack(null)
+                            .commit()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(
+                            requireContext(),
+                            "Incorrect Password Or Email",
+                            Toast.LENGTH_SHORT,
+                        ).show()
                 }
             }
 
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){}
     }
 
     private fun saveLoginState(isLoggedIn: Boolean, userId: String) {

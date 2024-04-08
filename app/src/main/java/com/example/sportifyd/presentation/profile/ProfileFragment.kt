@@ -14,9 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
-import androidx.constraintlayout.motion.widget.Debug.getLocation
+import androidx.activity.addCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -51,11 +52,12 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){}
         sharedPreferences = context?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val navController = findNavController()
         val user = loadUserDataFromSharedPreferences()
 
-        if (user?.photo != null) {
+        if (!user?.photo.isNullOrEmpty()) {
             setPhotoProfile()
         }
 
@@ -128,6 +130,7 @@ class ProfileFragment : Fragment() {
 
             logoutButton.setOnClickListener {
                 sharedPreferences?.edit()?.clear()?.apply()
+                parentFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
                 val intent = Intent(requireActivity(), SplashActivity::class.java)
                 startActivity(intent)
@@ -197,6 +200,8 @@ class ProfileFragment : Fragment() {
             Glide.with(this@ProfileFragment)
                 .load(uri ?: loadUserDataFromSharedPreferences()?.photo)
                 .apply(RequestOptions.circleCropTransform())
+                .placeholder(R.drawable.icon_popular_event_png)
+                .error(R.drawable.icon_popular_event_png)
                 .into(profileImage)
 
             icOnline.isVisible = false

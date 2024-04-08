@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.sportifyd.databinding.FragmentHomeBinding
 import com.example.sportifyd.entity.SportEvent
 import com.example.sportifyd.entity.User
+import androidx.activity.addCallback
 import com.example.sportifyd.presentation.EventDetailsBottomSheet
 import com.example.sportifyd.presentation.home.adapter.PopularEventViewHolder
 import com.example.sportifyd.presentation.home.adapter.PopularEventAdapter
@@ -45,7 +46,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){}
         val userList: MutableList<User> = mutableListOf()
 
         val query = Service.getUsersDataRef().orderByChild("organizedEventsNumber")
