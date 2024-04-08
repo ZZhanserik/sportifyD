@@ -30,14 +30,20 @@ class EventDetailsBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
             createButton.setOnClickListener {
-                Service.subscribeToEvent(item) {
-
-                    Toast.makeText(
-                        requireContext(),
-                        "You have joined",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+                Service.subscribeToEvent(sportEvent = item,
+                    onSuccess = {
+                        Toast.makeText(
+                            requireContext(),
+                            "You have joined",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }, onError = { message ->
+                        Toast.makeText(
+                            requireContext(),
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    })
             }
             eventName.text = item.eventName
             eventLevel.text = item.level
