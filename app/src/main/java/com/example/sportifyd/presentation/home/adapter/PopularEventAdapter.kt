@@ -10,8 +10,12 @@ import com.example.sportifyd.entity.SportEvent
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.example.sportifyd.data.Service
+import com.example.sportifyd.entity.SportEventStatus
 
-class PopularEventAdapter(options: FirebaseRecyclerOptions<SportEvent>, val onClick:(SportEvent)->Unit) : FirebaseRecyclerAdapter<SportEvent, PopularEventViewHolder>(options) {
+class PopularEventAdapter(
+    options: FirebaseRecyclerOptions<SportEvent>,
+    val onClick: (SportEvent) -> Unit
+) : FirebaseRecyclerAdapter<SportEvent, PopularEventViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularEventViewHolder {
         return PopularEventViewHolder(
@@ -24,13 +28,20 @@ class PopularEventAdapter(options: FirebaseRecyclerOptions<SportEvent>, val onCl
     }
 
 
-    override fun onBindViewHolder(holder: PopularEventViewHolder, position: Int, model: SportEvent) {
+    override fun onBindViewHolder(
+        holder: PopularEventViewHolder,
+        position: Int,
+        model: SportEvent
+    ) {
         holder.bind(model)
     }
 
 }
 
-class PopularEventViewHolder(val binding: ItemPopularEventsBinding, private val onClick:(SportEvent)->Unit) : ViewHolder(binding.root) {
+class PopularEventViewHolder(
+    val binding: ItemPopularEventsBinding,
+    private val onClick: (SportEvent) -> Unit
+) : ViewHolder(binding.root) {
     fun bind(item: SportEvent) {
         val popularEvent = convertSportEventToPopularEvent(item)
         val joined = Service.checkIfJoinedToEvent(item.participants)
@@ -39,6 +50,7 @@ class PopularEventViewHolder(val binding: ItemPopularEventsBinding, private val 
             eventName.text = popularEvent.eventName
             eventStatus.text = popularEvent.eventStatus
             eventPrice.text = popularEvent.pricePerPerson
+            eventStatus.text = if (item.maxParticipants == item.participantsNumber) SportEventStatus.CLOSED.name else SportEventStatus.OPEN.name
             eventParticipantsNumber.text = popularEvent.taken
             joinText.text = if (joined) "JOINED" else "JOIN"
             joinText.setBackgroundColor(if (joined) Color.WHITE else Color.GREEN)

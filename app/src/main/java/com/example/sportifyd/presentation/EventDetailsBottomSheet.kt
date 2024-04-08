@@ -11,6 +11,7 @@ import android.graphics.Color
 import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.EventDetailsBottomSheetBinding
 import com.example.sportifyd.entity.SportEvent
+import com.example.sportifyd.entity.SportEventStatus
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 
@@ -49,22 +50,30 @@ class EventDetailsBottomSheet : BottomSheetDialogFragment() {
                 }
             } else {
                 createButton.setOnClickListener {
-                    Service.subscribeToEvent(sportEvent = item,
-                        onSuccess = {
-                            Toast.makeText(
-                                requireContext(),
-                                "You have joined",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            dismiss()
-                        }, onError = { message ->
-                            Toast.makeText(
-                                requireContext(),
-                                message,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            dismiss()
-                        })
+                    if (item.status == SportEventStatus.CLOSED.name) {
+                        Toast.makeText(
+                            requireContext(),
+                            "You cant join to Current event, it is full",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Service.subscribeToEvent(sportEvent = item,
+                            onSuccess = {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "You have joined",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                dismiss()
+                            }, onError = { message ->
+                                Toast.makeText(
+                                    requireContext(),
+                                    message,
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                dismiss()
+                            })
+                    }
                 }
             }
             eventName.text = item.eventName
