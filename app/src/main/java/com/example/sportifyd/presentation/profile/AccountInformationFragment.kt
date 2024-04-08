@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sportifyd.databinding.FragmentAccountEditBinding
 import com.example.sportifyd.entity.User
+import com.example.sportifyd.data.Service
 
 class AccountInformationFragment: Fragment() {
 

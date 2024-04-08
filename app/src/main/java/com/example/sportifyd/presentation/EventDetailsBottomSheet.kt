@@ -1,10 +1,13 @@
 package com.example.sportifyd.presentation
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
+import android.graphics.Color
 import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.EventDetailsBottomSheetBinding
 import com.example.sportifyd.entity.SportEvent
@@ -29,21 +32,40 @@ class EventDetailsBottomSheet : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.run {
-            createButton.setOnClickListener {
-                Service.subscribeToEvent(sportEvent = item,
-                    onSuccess = {
-                        Toast.makeText(
-                            requireContext(),
-                            "You have joined",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }, onError = { message ->
-                        Toast.makeText(
-                            requireContext(),
-                            message,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    })
+            if (Service.checkIfJoinedToEvent(item.participants)) {
+                createButton.text = "JOINED"
+                createButton.backgroundTintList = ColorStateList.valueOf(Color.WHITE)
+                unJoinCard.isVisible = true
+                unJoinButton.setOnClickListener {
+                    Service.unSubscribeToEvent(sportEvent = item,
+                        onSuccess = {
+                            Toast.makeText(
+                                requireContext(),
+                                "You have unjoined from this event",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            dismiss()
+                        })
+                }
+            } else {
+                createButton.setOnClickListener {
+                    Service.subscribeToEvent(sportEvent = item,
+                        onSuccess = {
+                            Toast.makeText(
+                                requireContext(),
+                                "You have joined",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            dismiss()
+                        }, onError = { message ->
+                            Toast.makeText(
+                                requireContext(),
+                                message,
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            dismiss()
+                        })
+                }
             }
             eventName.text = item.eventName
             eventLevel.text = item.level
