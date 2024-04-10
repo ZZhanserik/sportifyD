@@ -1,7 +1,6 @@
 package com.example.sportify.data
 
 
-import android.widget.Toast
 import com.example.sportify.entity.SportEvent
 import com.example.sportify.entity.SportEventStatus
 import com.example.sportify.entity.User

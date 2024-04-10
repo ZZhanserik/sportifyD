@@ -2,7 +2,6 @@ package com.example.sportify.presentation.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.sportify.databinding.ItemPopularEventsBinding

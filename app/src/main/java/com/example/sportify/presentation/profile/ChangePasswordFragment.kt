@@ -12,8 +12,10 @@ import com.example.sportify.R
 import com.example.sportify.data.Service
 import com.example.sportify.databinding.FragmentChangePasswordBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+
 class ChangePasswordFragment : Fragment() {
 
+    private lateinit var bottomNavigationView: BottomNavigationView
     private var _binding: FragmentChangePasswordBinding? = null
     private val binding get() = _binding!!
 

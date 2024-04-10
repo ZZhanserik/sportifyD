@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -22,9 +21,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.sportify.data.Service
 import com.example.sportify.R
 import com.example.sportify.SplashActivity
+import com.example.sportify.data.Service
 import com.example.sportify.databinding.FragmentProfileBinding
 import com.example.sportify.entity.User
 import com.google.gson.Gson
@@ -55,6 +54,7 @@ class ProfileFragment : Fragment() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){}
         sharedPreferences = context?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val navController = findNavController()
+
         val user = loadUserDataFromSharedPreferences()
 
         if (!user?.photo.isNullOrEmpty()) {
@@ -63,7 +63,6 @@ class ProfileFragment : Fragment() {
 
         binding.run {
             fullNameTv.text = user?.fullName
-
             bioTextView.text = user?.bio
 
             editBio.setOnClickListener {
@@ -121,8 +120,6 @@ class ProfileFragment : Fragment() {
                 navController.navigate(R.id.action_navigation_profile_to_accountInformationFragment)
             }
 
-
-
             changePassword.setOnClickListener {
                 navController.navigate(R.id.action_navigation_profile_to_changePasswordFragment)
             }
@@ -134,31 +131,33 @@ class ProfileFragment : Fragment() {
 
                 val intent = Intent(requireActivity(), SplashActivity::class.java)
                 startActivity(intent)
+                requireActivity().finish()
             }
         }
-        private fun updateBioInFirebase(newText: String) {
-            Service.getUsersDataRef().child(Service.getCurrentUser()?.uid ?: "")
-                .setValue(
-                    binding.run {
+    }
+
+    private fun updateBioInFirebase(newText: String) {
+        Service.getUsersDataRef().child(Service.getCurrentUser()?.uid ?: "")
+            .setValue(
+                binding.run {
+                    loadUserDataFromSharedPreferences()?.copy(
+                        bio = newText
+                    )
+                }
+            ).addOnSuccessListener {
+                Toast.makeText(
+                    requireContext(),
+                    "You have successfully updated Bio",
+                    Toast.LENGTH_SHORT
+                ).show()
+                binding.run {
+                    saveUserDataToSharedPreferences(
                         loadUserDataFromSharedPreferences()?.copy(
                             bio = newText
-                        )
-                    }
-                ).addOnSuccessListener {
-                    Toast.makeText(
-                        requireContext(),
-                        "You have successfully updated Bio",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    binding.run {
-                        saveUserDataToSharedPreferences(
-                            loadUserDataFromSharedPreferences()?.copy(
-                                bio = newText
-                            ) ?: User()
-                        )
-                    }
+                        ) ?: User()
+                    )
                 }
-        }
+            }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.sportifyd"
+    namespace = "com.example.sportify"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.sportifyd"
+        applicationId = "com.example.sportify"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
