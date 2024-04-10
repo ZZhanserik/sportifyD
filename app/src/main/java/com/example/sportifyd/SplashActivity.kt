@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View.GONE
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sportifyd.databinding.ActivitySplashBinding
-import com.example.sportifyd.presentation.login.LoginFragment
-import com.example.sportifyd.presentation.pin.PinCodeFragment
+import com.example.sportifyd.presentation.LoginFragment
+import com.example.sportifyd.presentation.PinCodeFragment
 
 class SplashActivity : AppCompatActivity() {
 

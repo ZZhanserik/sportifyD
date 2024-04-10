@@ -1,9 +1,10 @@
-package com.example.sportify.presentation.search
+package com.example.sportifyd.presentation
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import androidx.activity.addCallback
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -33,7 +34,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){}
         loadData("")
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
@@ -52,9 +53,11 @@ class SearchFragment : Fragment() {
         val query = Service.getEventsDataRef().orderByChild("eventName").startAt(data)
             .endAt(data + "\uf8ff")
         popularEvents =
-            FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java)
-                .build()
-        adapterEvents = PopularEventAdapter(popularEvents, {})
+            FirebaseRecyclerOptions.Builder<SportEvent>().setQuery(query, SportEvent::class.java).build()
+        adapterEvents = PopularEventAdapter(popularEvents) {
+            val bottomSheetFragment = EventDetailsBottomSheet.newInstance(it)
+            bottomSheetFragment.show(childFragmentManager, bottomSheetFragment.tag)
+        }
         adapterEvents.startListening()
         binding.popularEventsRv.adapter = adapterEvents
     }

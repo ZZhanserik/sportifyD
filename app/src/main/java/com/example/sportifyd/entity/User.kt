@@ -1,5 +1,7 @@
 package com.example.sportifyd.entity
 
+import java.io.Serializable
+
 data class User(
     val fullName: String = "",
     val userName: String ="",
@@ -10,4 +12,4 @@ data class User(
     val photo: String = "",
     val events: Map<String, Boolean> = mapOf(),
     val organizedEventsNumber: Int = 0,
-)
+): Serializable

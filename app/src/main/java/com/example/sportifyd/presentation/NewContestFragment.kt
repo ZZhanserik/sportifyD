@@ -1,4 +1,4 @@
-package com.example.sportifyd.presentation.newcontest
+package com.example.sportifyd.presentation
 
 import android.R
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.addCallback
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import com.example.sportifyd.data.Service
 import com.example.sportifyd.databinding.FragmentNewContestBinding
@@ -98,11 +98,17 @@ class NewContestFragment:Fragment() {
                     selectedDuration = parent?.getItemAtPosition(0).toString()
                 }
             }
+
+            freeCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) price.text.clear()
+            }
         }
 
         return root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){}
 
         binding.createButton.setOnClickListener {
             invalidate()
@@ -117,7 +123,7 @@ class NewContestFragment:Fragment() {
                 || eventLocation.text.isNullOrEmpty()
                 || formattedTimeForDataRef.isBlank()
                 || selectedDateForDataRef.isBlank()
-                || price.text.isNullOrEmpty()
+                || (price.text.isNullOrEmpty() && !freeCheckbox.isChecked)
                 || maxPlayersEditText.text.isNullOrEmpty()
                 || description.text.isNullOrEmpty()
             ) {
@@ -147,7 +153,7 @@ class NewContestFragment:Fragment() {
                 maxParticipants = maxPlayersEditText.text.toString().toInt(),
                 description = description.text.toString()
             )
-            Service.createNewEventToDB(event).addOnSuccessListener {
+            Service.createNewEventToDB(event) {
                 Toast.makeText(
                     requireContext(),
                     "You have succesfully created Event",

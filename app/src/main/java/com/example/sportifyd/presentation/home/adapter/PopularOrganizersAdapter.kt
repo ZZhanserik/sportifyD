@@ -2,6 +2,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.util.Log
+import androidx.core.net.toUri
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.example.sportifyd.R
 import android.widget.BaseAdapter
 import com.example.sportifyd.databinding.ItemPopularOrganizersBinding
 import com.example.sportifyd.presentation.home.adapter.PopularOrganizers
@@ -31,6 +36,16 @@ class PopularOrganizersAdapter(private val dataList: List<PopularOrganizers>) : 
         itemView.organizerName.text = dataItem.organizerName
         itemView.organizerStatus.text = dataItem.organizerStatus
         itemView.organizerCategory.text = dataItem.category
+
+        Glide.with(parent.context)
+            .load(dataItem.photo)
+            .apply(RequestOptions.circleCropTransform())
+            .placeholder(R.drawable.icon_popular_event_png)
+            .error(R.drawable.icon_popular_event_png)
+            .into(itemView.organizerPhoto)
+
+        Log.d("Image for ${dataItem.organizerName}", "${dataItem.photo} and ${dataItem.photo.toUri()}")
+
 
         return itemView.root
     }

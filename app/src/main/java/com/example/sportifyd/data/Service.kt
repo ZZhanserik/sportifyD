@@ -1,5 +1,7 @@
 package com.example.sportifyd.data
 
+
+import android.widget.Toast
 import com.example.sportifyd.entity.SportEvent
 import com.example.sportifyd.entity.SportEventStatus
 import com.example.sportifyd.entity.User
@@ -42,35 +44,79 @@ object Service {
         usersRef.child(getCurrentUser()?.uid ?: "").setValue(user)
     }
     private fun setCurrentUserAsData() {
-        usersRef.child(getCurrentUser()?.uid ?: "").addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                user = snapshot.getValue(User::class.java)?:User()
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-        })
-    }
-    fun createNewEventToDB(event: SportEvent): Task<Void> {
-        val key = eventsRef.push().key ?: ""
-        return eventsRef.child(key).setValue(event.copy(eventId = key))
-    }
-    fun subscribeToEvent(sportEvent: SportEvent, onSuccess: () -> Unit) {
-        usersRef.child(getCurrentUser()?.uid ?: "").child("events").child(sportEvent.eventId).setValue(true)
-            .addOnSuccessListener {
-                val eventsNumberOrganized = user.organizedEventsNumber + 1
-                usersRef.child(getCurrentUser()?.uid ?: "").child("organizedEventsNumber").setValue(eventsNumberOrganized)
-                if(sportEvent.participantsNumber == sportEvent.maxParticipants){
-                    eventsRef.child(sportEvent.eventId).child("status").setValue(SportEventStatus.CLOSED.name)
+        usersRef.child(getCurrentUser()?.uid ?: "")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    user = snapshot.getValue(User::class.java) ?: User()
                 }
-                val participantNumber = sportEvent.participantsNumber + 1
-                eventsRef.child(sportEvent.eventId).child("participantsNumber").setValue(participantNumber)
-                eventsRef.child(sportEvent.eventId).child("participants")
-                    .child(getCurrentUser()?.uid.orEmpty())
-                    .setValue(true).addOnSuccessListener {
-                        onSuccess.invoke()
-                    }
-            }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
+    fun createNewEventToDB(event: SportEvent, onSuccess: () -> Unit) {
+        val key = eventsRef.push().key ?: ""
+        val eventsNumberOrganized = user.organizedEventsNumber + 1
+        usersRef.child(getCurrentUser()?.uid ?: "").child("organizedEventsNumber").setValue(eventsNumberOrganized).addOnSuccessListener {
+            eventsRef.child(key).setValue(event.copy(eventId = key)).addOnSuccessListener {
+                onSuccess.invoke()
+            }
+        }
+    }
+    fun subscribeToEvent(sportEvent: SportEvent, onSuccess: () -> Unit, onError: (String) -> Unit) {
+        if (!checkIfJoinedToEvent(sportEvent.participants)) {
+            usersRef.child(getCurrentUser()?.uid ?: "").child("events")
+                .child(sportEvent.eventId).setValue(true)
+                .addOnSuccessListener {
+
+                        if (sportEvent.participantsNumber == sportEvent.maxParticipants) {
+                        eventsRef.child(sportEvent.eventId).child("status")
+                            .setValue(SportEventStatus.CLOSED.name)
+                    }
+                    val participantNumber = sportEvent.participantsNumber + 1
+                    eventsRef.child(sportEvent.eventId).child("participantsNumber")
+                        .setValue(participantNumber)
+
+                    eventsRef.child(sportEvent.eventId).child("participants")
+                        .child(getCurrentUser()?.uid.orEmpty())
+                        .setValue(true).addOnSuccessListener {
+                            onSuccess.invoke()
+                        }
+                }
+
+                } else {
+                onError.invoke("You already Joined")
+            }
+        }
+
+        fun unSubscribeToEvent(sportEvent: SportEvent, onSuccess: () -> Unit) {
+            usersRef.child(getCurrentUser()?.uid ?: "").child("events")
+                .child(sportEvent.eventId).removeValue()
+                .addOnSuccessListener {
+
+                    val eventsNumberOrganized = user.organizedEventsNumber - 1
+                    usersRef.child(getCurrentUser()?.uid ?: "")
+                        .child("organizedEventsNumber").setValue(eventsNumberOrganized)
+
+                    if (sportEvent.participantsNumber == sportEvent.maxParticipants) {
+                        eventsRef.child(sportEvent.eventId).child("status")
+                            .setValue(SportEventStatus.OPEN.name)
+                    }
+
+                    val participantNumber = sportEvent.participantsNumber - 1
+                    eventsRef.child(sportEvent.eventId).child("participantsNumber")
+                        .setValue(participantNumber)
+
+                    eventsRef.child(sportEvent.eventId).child("participants")
+                        .child(getCurrentUser()?.uid.orEmpty())
+                        .removeValue().addOnSuccessListener {
+                            onSuccess.invoke()
+                        }
+                }
+
+            }
+    fun checkIfJoinedToEvent(participants: Map<String, Boolean>): Boolean {
+        return getCurrentUser()?.uid in participants.keys
+        }
 }

@@ -7,7 +7,7 @@ data class SportEvent(
     val eventName: String = "",
     val level: String = "",
     val location: String = "",
-    val price: String = "",
+    val price: String = "0",
     val date: String = "",
     val time: String = "",
     val duration: String = "",

@@ -210,7 +210,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:buttonTint="@color/green1"
                         android:text="@string/notification"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -219,7 +218,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:buttonTint="@color/green1"
                         android:text="@string/email"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                 </LinearLayout>
