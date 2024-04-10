@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "1065681749464",
+    "firebase_url": "https://sportifydip-default-rtdb.firebaseio.com",
+    "project_id": "sportifydip",
+    "storage_bucket": "sportifydip.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1065681749464:android:3fa078f431a1d8d34adead",
+        "android_client_info": {
+          "package_name": "com.example.sportify"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsomX_FyfuN0IZ-LIzPedHtylxCOPw0hU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
