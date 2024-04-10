@@ -6,28 +6,28 @@
     app:startDestination="@+id/navigation_home">
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.sportifyd.presentation.home.HomeFragment"
+        android:name="com.example.sportify.presentation.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.sportifyd.presentation.SearchFragment"
+        android:name="com.example.sportify.presentation.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" >
     </fragment>
     <fragment
         android:id="@+id/navigation_new_contest"
-        android:name="com.example.sportifyd.presentation.NewContestFragment"
+        android:name="com.example.sportify.presentation.NewContestFragment"
         android:label="@string/title_new_contest"
         tools:layout="@layout/fragment_new_contest" />
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.example.sportifyd.presentation.NotificationsFragment"
+        android:name="com.example.sportify.presentation.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.example.sportifyd.presentation.profile.ProfileFragment"
+        android:name="com.example.sportify.presentation.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -42,13 +42,13 @@
 
     <fragment
         android:id="@+id/accountInformationFragment"
-        android:name="com.example.sportifyd.presentation.profile.AccountInformationFragment"
+        android:name="com.example.sportify.presentation.profile.AccountInformationFragment"
         android:label="Edit Account Info"
         tools:layout="@layout/fragment_account_edit" />
 
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.example.sportifyd.presentation.profile.ChangePasswordFragment"
+        android:name="com.example.sportify.presentation.profile.ChangePasswordFragment"
         android:label="Change Password"
         tools:layout="@layout/fragment_change_password" />
 
